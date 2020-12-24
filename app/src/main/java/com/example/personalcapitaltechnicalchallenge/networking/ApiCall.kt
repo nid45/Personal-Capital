@@ -3,8 +3,8 @@ package com.example.personalcapitaltechnicalchallenge.networking
 import android.os.AsyncTask
 import android.util.Log
 import androidx.core.content.contentValuesOf
+import com.example.personalcapitaltechnicalchallenge.models.Data
 import com.example.personalcapitaltechnicalchallenge.models.Article
-import com.example.personalcapitaltechnicalchallenge.models.Item
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.BufferedReader

@@ -1,73 +1,112 @@
 package com.example.personalcapitaltechnicalchallenge
 
+import android.R
+import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
+import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
+import android.view.Gravity
+import android.view.View
+import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import com.example.personalcapitaltechnicalchallenge.mainviewmodelfactory.MainViewModelFactory
-import com.example.personalcapitaltechnicalchallenge.models.Article
-import com.example.personalcapitaltechnicalchallenge.models.Item
-import com.example.personalcapitaltechnicalchallenge.networking.ApiCall
-import com.example.personalcapitaltechnicalchallenge.viewmodel.MainViewModel
-import org.json.JSONArray
-import org.json.JSONObject
+import androidx.appcompat.widget.Toolbar
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
+import com.example.personalcapitaltechnicalchallenge.helpers.MediaContentLoader
+import com.example.personalcapitaltechnicalchallenge.ui.MainFragment
+
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: MainViewModel
-    private lateinit var mainViewModelFactory: MainViewModelFactory
 
+    @SuppressLint("RtlHardcoded")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        val coordinatorLayout = CoordinatorLayout(this)
+        coordinatorLayout.id = View.generateViewId()
+
+        val coordinatorLayoutParams =
+            CoordinatorLayout.LayoutParams(
+                CoordinatorLayout.LayoutParams.MATCH_PARENT,
+                CoordinatorLayout.LayoutParams.MATCH_PARENT
+            )
+
+
+        val linearLayout = LinearLayout(this)
+        linearLayout.gravity = Gravity.CENTER_HORIZONTAL
+        linearLayout.orientation = LinearLayout.VERTICAL
+        linearLayout.layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT
+        )
+        linearLayout.setBackgroundColor(Color.BLACK)
+
+        val toolbar = Toolbar(this)
+        toolbar.id = View.generateViewId()
+        var layout = Toolbar.LayoutParams(
+            Toolbar.LayoutParams.MATCH_PARENT,
+            Toolbar.LayoutParams.WRAP_CONTENT
+        )
+        toolbar.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        layout.gravity = Gravity.CENTER
+        toolbar.layoutParams = layout
+
+        toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.black))
+        toolbar.title = "Daily Capital Blog"
+        val bt = Button(this)
+        bt.text = "⟲"
+        bt.textSize = 30F
+        bt.setBackgroundColor(Color.BLACK)
+        val params: Toolbar.LayoutParams =
+            Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.WRAP_CONTENT)
+        params.gravity = Gravity.RIGHT
+        bt.layoutParams = params
+        setSupportActionBar(toolbar)
+        toolbar.addView(bt)
+        linearLayout.addView(toolbar)
+
+        refreshButton = bt
+
+
+        val frameLayout = FrameLayout(this)
+        frameLayout.id = View.generateViewId()
+        frameLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.black))
+        frameLayout.layoutParams = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT,
+            FrameLayout.LayoutParams.MATCH_PARENT
+        )
+        linearLayout.addView(frameLayout)
+
+        coordinatorLayout.addView(linearLayout)
+        setContentView(coordinatorLayout, coordinatorLayoutParams)
+
+
+
+
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-    mainViewModelFactory = MainViewModelFactory()
+        if (savedInstanceState == null) {
+            mainLayout = frameLayout
+            val frag =
+                MainFragment()
 
-    viewModel = ViewModelProvider(
-    this,
-    mainViewModelFactory
-    ).get(MainViewModel::class.java)
+            supportFragmentManager.beginTransaction().add(frag, "main").commit()
 
-    var art = ApiCall().execute()
-    viewModel.init(parseData(art.get()))
-
-    }
-
-    private fun parseData(message: String): Article {
-        var jsonObject = JSONObject(message)
-
-        var description = jsonObject.getString("description").toString()
-        var feed_url = jsonObject.getString("feed_url").toString()
-        var home_page_url = jsonObject.getString("home_page_url").toString()
-        var title = jsonObject.getString("title").toString()
-        var user_comment = jsonObject.getString("user_comment").toString()
-        var version = jsonObject.getString("version").toString()
-        var itemArray = JSONArray(jsonObject.getString("items"))
-
-        var itemList:MutableList<Item> = mutableListOf<Item>()
-        for (i in 0 .. itemArray.length() - 1) {
-            var item = itemArray[i] as JSONObject
-            var author = item.get("author").toString()
-            var category = item.getString("category").toString()
-            var content = item.getString("content").toString()
-            var content_html = item.getString("content_html").toString()
-            var date_modified= item.getString("date_modified").toString()
-            var date_published = item.getString("date_published").toString()
-            var encoded_title = item.getString("encoded_title").toString()
-            var featured_image = item.getString("featured_image").toString()
-            var id = item.getString("id").toString()
-            var insight_summary = item.getString("insight_summary").toString()
-            var summary = item.getString("summary").toString()
-            var summary_html = item.getString("summary_html").toString()
-            var title = item.getString("title").toString()
-            var url = item.getString("url").toString()
-            Log.i("fuck", author)
-            itemList.add((Item(author, category, content, content_html, date_modified, date_published, encoded_title, featured_image, id, insight_summary,
-                summary, summary_html, title, url)))
+            supportFragmentManager.beginTransaction()
+                .replace(frameLayout.id, frag).commit()
         }
-        return Article(description, feed_url, home_page_url, itemList, title, user_comment, version)
-
     }
+
+    companion object{
+        lateinit var mainLayout: FrameLayout
+        lateinit var refreshButton: Button
+    }
+
+
 }
+
+
+
+

@@ -1,16 +1,18 @@
 package com.example.personalcapitaltechnicalchallenge.models
 
-data class Article(
+import java.io.Serializable
+
+data class Data(
     val description: String,
     val feed_url: String,
     val home_page_url: String,
-    val items: List<Item>,
+    val items: List<Article>,
     val title: String,
     val user_comment: String,
     val version: String
 )
 
-data class Item(
+data class Article(
     val author: Any,
     val category: String,
     val content: String,
@@ -25,4 +27,4 @@ data class Item(
     val summary_html: String,
     val title: String,
     val url: String
-)
+) : Serializable
