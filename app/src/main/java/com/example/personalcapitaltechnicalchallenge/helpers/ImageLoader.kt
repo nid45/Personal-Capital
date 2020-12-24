@@ -3,12 +3,13 @@ package com.example.personalcapitaltechnicalchallenge.helpers
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.AsyncTask
-import android.util.Log
 import android.widget.ImageView
 import java.io.BufferedInputStream
 import java.io.IOException
 import java.net.URL
 
+
+//asynchronous image loader given the article image url provided from the rss feed
 class MediaContentLoader constructor(
     private val imageView: ImageView,
     private val url: String
@@ -23,20 +24,24 @@ class MediaContentLoader constructor(
         }
     }
 
-
+    /**
+     * formats the publication date
+     * @param url - the url provided to the picture for each article
+     * @return image bitmap associated with article's image
+     */
     private fun getImageBitmap(url: String): Bitmap? {
-        var bitMap: Bitmap? = null
+        var bitmap: Bitmap? = null
         try {
             val url = URL(url)
             val connection = url.openConnection()
             connection.connect()
             val inputStream = connection.getInputStream()
             val bufferedInputStream = BufferedInputStream(inputStream)
-            bitMap = BitmapFactory.decodeStream(bufferedInputStream)
+            bitmap = BitmapFactory.decodeStream(bufferedInputStream)
             bufferedInputStream.close()
             inputStream.close()
         } catch (e: IOException) { }
-        return bitMap
+        return bitmap
     }
 
     override fun doInBackground(vararg voids: Void?): Bitmap? {

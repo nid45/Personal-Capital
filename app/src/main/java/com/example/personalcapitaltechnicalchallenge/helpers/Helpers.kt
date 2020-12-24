@@ -1,7 +1,4 @@
 package com.example.personalcapitaltechnicalchallenge.helpers
-import android.R
-import android.content.Context
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.Html
 import android.text.Spanned
@@ -9,12 +6,13 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
+
+//helper functions for the application
 object Helpers {
     /**
-     * format the html text from the xml input
-     *
-     * @param html html formatted text
-     * @return returns an the string with the text properly formatted for the text view
+     * format the html from what is pulled
+     * @param html as pulled
+     * @return returns html string
      */
     fun fromHtml(html: String?): Spanned {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -24,20 +22,23 @@ object Helpers {
         }
     }
 
-
-
+    /**
+     * formats the publication date
+     * @param dateString - the date in the format it was pulled
+     * @return returns the date formatted like mon day, year
+     */
     fun formatDateTime(dateString: String?): String? {
-        var dateString = dateString
+        var returnString = dateString
         var simpleDateFormat =
             SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US)
         val date: Date?
         try {
             date = simpleDateFormat.parse(dateString)
             simpleDateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.US)
-            dateString = simpleDateFormat.format(date) + " "
+            returnString = simpleDateFormat.format(date) + " "
         } catch (e: ParseException) {
             e.printStackTrace()
         }
-        return dateString
+        return returnString
     }
 }
