@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.telephony.TelephonyManager
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +24,6 @@ import com.example.personalcapitaltechnicalchallenge.adapters.CustomRecyclerView
 import com.example.personalcapitaltechnicalchallenge.mainviewmodelfactory.MainViewModelFactory
 import com.example.personalcapitaltechnicalchallenge.networking.ApiCall
 import com.example.personalcapitaltechnicalchallenge.viewmodel.MainViewModel
-import java.util.*
 import kotlin.math.pow
 import kotlin.math.sqrt
 

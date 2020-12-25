@@ -1,7 +1,6 @@
 package com.example.personalcapitaltechnicalchallenge
 
 import android.R
-import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Bundle
@@ -10,12 +9,10 @@ import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
-import com.example.personalcapitaltechnicalchallenge.helpers.MediaContentLoader
 import com.example.personalcapitaltechnicalchallenge.ui.MainFragment
 
 
