@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -54,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         //title
         toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.black))
         toolbar.title = "Daily Capital Blog"
+        maintoolbar = toolbar
         val bt = Button(this)
         bt.text = "⟲"
         bt.textSize = 30F
@@ -103,6 +105,7 @@ class MainActivity : AppCompatActivity() {
     companion object{
         lateinit var mainLayout: FrameLayout
         lateinit var refreshButton: Button
+        lateinit var maintoolbar: Toolbar
     }
 
 

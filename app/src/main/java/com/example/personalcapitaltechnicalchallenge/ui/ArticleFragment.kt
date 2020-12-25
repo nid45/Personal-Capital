@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.example.personalcapitaltechnicalchallenge.MainActivity.Companion.mainLayout
+import com.example.personalcapitaltechnicalchallenge.MainActivity.Companion.maintoolbar
 import com.example.personalcapitaltechnicalchallenge.MainActivity.Companion.refreshButton
 import com.example.personalcapitaltechnicalchallenge.helpers.Helpers
 import com.example.personalcapitaltechnicalchallenge.helpers.MediaContentLoader
@@ -119,6 +120,7 @@ class ArticleFragment : Fragment() {
             //retrieve the article that was passed when the user clicked on it
             article =  arguments?.getSerializable("item") as Article
 
+            maintoolbar.title = article.title
             //show image at top of article
             article_image = ImageView(context)
             article_image.id = View.generateViewId()

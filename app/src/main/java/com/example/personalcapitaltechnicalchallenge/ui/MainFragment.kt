@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.telephony.TelephonyManager
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,17 +19,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.personalcapitaltechnicalchallenge.MainActivity
+import com.example.personalcapitaltechnicalchallenge.MainActivity.Companion.maintoolbar
 import com.example.personalcapitaltechnicalchallenge.MainActivity.Companion.refreshButton
 import com.example.personalcapitaltechnicalchallenge.adapters.CustomRecyclerViewAdapter
 import com.example.personalcapitaltechnicalchallenge.mainviewmodelfactory.MainViewModelFactory
-import com.example.personalcapitaltechnicalchallenge.models.Article
-import com.example.personalcapitaltechnicalchallenge.models.Data
 import com.example.personalcapitaltechnicalchallenge.networking.ApiCall
 import com.example.personalcapitaltechnicalchallenge.viewmodel.MainViewModel
-import org.json.JSONArray
-import org.json.JSONObject
 import java.util.*
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 
 class MainFragment : Fragment() {
@@ -75,16 +74,19 @@ class MainFragment : Fragment() {
             }
         })
 
+        maintoolbar.title = "Daily Capital Blog"
 
         container?.removeAllViews()
         refreshButton.visibility = View.VISIBLE
         mainViewModelFactory = MainViewModelFactory()
 
+        //create the viewmodel that will hold the data
         viewModel = ViewModelProvider(
             this,
             mainViewModelFactory
         ).get(MainViewModel::class.java)
 
+        //get the Data object from the rss feed and parse it into Article objects
         val art = ApiCall().execute()
         viewModel.init(MainViewModel.parser.parseData(art.get()))
 
@@ -111,13 +113,12 @@ class MainFragment : Fragment() {
             RecyclerView.LayoutParams.MATCH_PARENT,
             RecyclerView.LayoutParams.MATCH_PARENT
         )
-
-        recyclerView.layoutManager = GridLayoutManager(context, 2)
+        var spanSize = 2
+        if(checkIsTablet()) spanSize = 3
+        recyclerView.layoutManager = GridLayoutManager(context, spanSize)
         (recyclerView.layoutManager as GridLayoutManager).spanSizeLookup = object : SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
-                var manager: TelephonyManager = context?.getSystemService(
-                    Context.TELEPHONY_SERVICE) as TelephonyManager
-                return if (Objects.requireNonNull(manager).phoneType == TelephonyManager.PHONE_TYPE_NONE) {
+                return if (checkIsTablet()) {
                     if (position == 0) 3
                     else 1
                 }else{
@@ -167,5 +168,17 @@ class MainFragment : Fragment() {
             parentViewGroup?.removeAllViews()
         }
         super.onDestroyView()
+    }
+
+    private fun checkIsTablet(): Boolean {
+        val display = (activity as Activity).windowManager.defaultDisplay
+        val metrics = DisplayMetrics()
+        display.getMetrics(metrics)
+        val widthInches = metrics.widthPixels / metrics.xdpi
+        val heightInches = metrics.heightPixels / metrics.ydpi
+        val diagonalInches = sqrt(
+            widthInches.toDouble().pow(2.0) + heightInches.toDouble().pow(2.0)
+        )
+        return diagonalInches >= 7.0
     }
 }

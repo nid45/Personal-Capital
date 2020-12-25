@@ -15,10 +15,13 @@ class MainViewModel : ViewModel() {
         this.article.value = article
     }
 
+    //parse the json data to create a data object and a list of article objects
     object parser {
         fun parseData(message: String?): Data {
+            //turn json string into json object
             val jsonObject = JSONObject(message)
 
+            //get elements of data so we can create
             val description = jsonObject.getString("description").toString()
             val feedUrl = jsonObject.getString("feed_url").toString()
             val homePageUrl = jsonObject.getString("home_page_url").toString()
@@ -27,6 +30,8 @@ class MainViewModel : ViewModel() {
             val version = jsonObject.getString("version").toString()
             val itemArray = JSONArray(jsonObject.getString("items"))
 
+
+            //get data to creat article in list
             val itemList: MutableList<Article> = mutableListOf()
             for (i in 0 until itemArray.length()) {
                 val item = itemArray[i] as JSONObject
@@ -45,6 +50,8 @@ class MainViewModel : ViewModel() {
                 val summaryHtml = item.getString("summary_html").toString()
                 val title = item.getString("title").toString()
                 val url = item.getString("url").toString()
+
+                //put data together into objects
                 itemList.add(
                     (Article(
                         author,
@@ -64,6 +71,8 @@ class MainViewModel : ViewModel() {
                     ))
                 )
             }
+
+            //return the new data object with everything we just pulled
             return Data(
                 description,
                 feedUrl,
