@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.personalcapitaltechnicalchallenge.models.Data
 import com.example.personalcapitaltechnicalchallenge.viewmodel.MainViewModel
 
+//viewmodel factory to create our viewmodel to house data needed in the app
 class MainViewModelFactory : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

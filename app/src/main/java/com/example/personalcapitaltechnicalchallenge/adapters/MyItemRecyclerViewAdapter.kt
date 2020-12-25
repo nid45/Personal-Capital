@@ -227,6 +227,42 @@ internal constructor(
             )
             linearLayout.addView(article_description)
             cardView.addView(linearLayout)
+
+            var separator = View(context)
+             var sepparams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                4
+            )
+            sepparams.setMargins(
+                0,
+                30,
+                0,
+                10
+            )
+            separator.layoutParams = sepparams
+            separator.setBackgroundColor(Color.parseColor("#FFFFFF"))
+            linearLayout.addView(separator)
+
+            var previous = TextView(context)
+            previous.text = "Previous Articles"
+            var prevparams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            prevparams.setMargins(
+                12,
+                20,
+                0,
+                20
+            )
+            previous.layoutParams = prevparams
+            previous.setTextColor(Color.parseColor("#FFFFFF"))
+            previous.textSize = 16F
+
+            linearLayout.addView(previous)
+
+
+
             return cardView
         }
 

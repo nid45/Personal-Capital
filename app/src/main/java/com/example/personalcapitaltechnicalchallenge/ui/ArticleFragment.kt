@@ -61,11 +61,6 @@ class ArticleFragment : Fragment() {
 
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -73,9 +68,11 @@ class ArticleFragment : Fragment() {
             savedInstanceState: Bundle?
         ): View? {
             setHasOptionsMenu(true)
+            //prevent overlapping layouts when creating new fragment
             container?.removeAllViews()
 
 
+            //handle press of the back button
             activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
 
@@ -84,24 +81,28 @@ class ArticleFragment : Fragment() {
                         MainFragment()
                     val fragmentA =
                         fragmentManager!!.findFragmentByTag("mainfrag")
+                    //try to find the main fragment already created in the stack which should always work
                     if (fragmentA == null) {
                         fm.beginTransaction()
                             .replace(mainLayout.id, fragment)
                             .commit()
                     } else {
+                        //create new main fragment but should never get here
                         fm.beginTransaction()
                             .replace(mainLayout.id, fragmentA)
                             .commit()
                     }
-                    }
+                }
 
             })
             container?.removeAllViews()
 
+        //refresh button should not be visible when displaying an article
         refreshButton.visibility = View.GONE
 
-            scrollView = ScrollView(activity!!)
-            scrollView.pageScroll(View.FOCUS_UP)
+        scrollView = ScrollView(activity!!)
+        //automatically start at top of the article
+        scrollView.pageScroll(View.FOCUS_UP)
         scrollView.layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
@@ -115,11 +116,10 @@ class ArticleFragment : Fragment() {
             )
             constraintLayout.setBackgroundColor(Color.parseColor("#000000"))
 
-
-
-
+            //retrieve the article that was passed when the user clicked on it
             article =  arguments?.getSerializable("item") as Article
 
+            //show image at top of article
             article_image = ImageView(context)
             article_image.id = View.generateViewId()
             article_image.scaleType = ImageView.ScaleType.FIT_XY
@@ -130,6 +130,8 @@ class ArticleFragment : Fragment() {
 
             article_image.adjustViewBounds = true
             constraintLayout.addView(article_image)
+
+        //asynchronously get the image from the source
             MediaContentLoader(
                 article_image,
                 article.featured_image
@@ -165,6 +167,7 @@ class ArticleFragment : Fragment() {
 
             constraintLayout.addView(article_title)
 
+            //display author below title
             article_author = TextView(context)
             article_author.id = View.generateViewId()
             article_author.text = "By: " + article.author
@@ -192,6 +195,7 @@ class ArticleFragment : Fragment() {
 
             constraintLayout.addView(article_author)
 
+            //display date in proper format below author
             article_date = TextView(context)
             article_date.id = View.generateViewId()
             article_date.text = Helpers.formatDateTime(article.date_published)
@@ -219,7 +223,7 @@ class ArticleFragment : Fragment() {
 
             constraintLayout.addView(article_date)
 
-
+            //display the content of the article in webview
             article_content = WebView(context)
             article_content.id = View.generateViewId()
             article_content.settings.javaScriptEnabled = true

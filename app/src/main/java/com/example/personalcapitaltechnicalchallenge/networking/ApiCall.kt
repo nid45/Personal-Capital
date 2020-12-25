@@ -12,7 +12,7 @@ import java.io.InputStreamReader
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
-
+//asynchronous call to fetch rss feed with all the necessary information to display
 class ApiCall : AsyncTask<String, Integer, String>() {
 
     override fun doInBackground(vararg params: String?): String? {
@@ -22,7 +22,7 @@ class ApiCall : AsyncTask<String, Integer, String>() {
             connection.requestMethod = "GET"
             connection.connect()
 
-
+            //if response code is ok(got the data) that return the json response as a string to be parsed in the main fragment
             if (connection.responseCode == HttpsURLConnection.HTTP_OK) {
                 val json = BufferedReader(InputStreamReader(connection.inputStream))
                 var message = String()
@@ -35,7 +35,7 @@ class ApiCall : AsyncTask<String, Integer, String>() {
 
                 return message
 
-            } else {
+            } else { //network request could not get rss feed
                 return null
             }
         }

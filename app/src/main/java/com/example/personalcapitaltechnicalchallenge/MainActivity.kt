@@ -19,9 +19,6 @@ import com.example.personalcapitaltechnicalchallenge.ui.MainFragment
 
 
 class MainActivity : AppCompatActivity() {
-
-
-    @SuppressLint("RtlHardcoded")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val coordinatorLayout = CoordinatorLayout(this)
@@ -43,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         )
         linearLayout.setBackgroundColor(Color.BLACK)
 
+        //create toolbar at top of screen
         val toolbar = Toolbar(this)
         toolbar.id = View.generateViewId()
         var layout = Toolbar.LayoutParams(
@@ -53,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         layout.gravity = Gravity.CENTER
         toolbar.layoutParams = layout
 
+        //title
         toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.black))
         toolbar.title = "Daily Capital Blog"
         val bt = Button(this)
@@ -84,13 +83,15 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
+        //lock in portrait mode
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         if (savedInstanceState == null) {
             mainLayout = frameLayout
             val frag =
                 MainFragment()
+
+            //go to Main fragment to display articles
 
             supportFragmentManager.beginTransaction().add(frag, "main").commit()
 

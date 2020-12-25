@@ -27,4 +27,4 @@ data class Article(
     val summary_html: String,
     val title: String,
     val url: String
-) : Serializable
+) : Serializable //serializable so we can pass this data between fragments using a bundle
