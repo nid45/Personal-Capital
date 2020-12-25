@@ -87,8 +87,10 @@ class MainFragment : Fragment() {
         ).get(MainViewModel::class.java)
 
         //get the Data object from the rss feed and parse it into Article objects
-        val art = ApiCall().execute()
-        viewModel.init(MainViewModel.parser.parseData(art.get()))
+        if(viewModel.article.value == null) {
+            val art = ApiCall().execute()
+            viewModel.init(MainViewModel.parser.parseData(art.get()))
+        }
 
         scrollView = ScrollView(activity!!)
         scrollView.id = View.generateViewId()

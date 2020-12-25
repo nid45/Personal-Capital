@@ -194,7 +194,6 @@ class ArticleFragment : Fragment() {
                 12
             )
 
-
             constraintLayout.addView(article_author)
 
             //display date in proper format below author
@@ -210,7 +209,6 @@ class ArticleFragment : Fragment() {
 
             (article_date.layoutParams as ConstraintLayout.LayoutParams).setMargins(40, 0, 40, 0)
 
-
             currentLayout = article_date.layoutParams as ConstraintLayout.LayoutParams
             currentLayout.topToBottom = article_author.id
             article_date.layoutParams = currentLayout
@@ -221,7 +219,6 @@ class ArticleFragment : Fragment() {
                 12,
                 12
             )
-
 
             constraintLayout.addView(article_date)
 
